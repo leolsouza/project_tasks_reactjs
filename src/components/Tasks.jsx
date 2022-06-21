@@ -1,10 +1,14 @@
-import Task from "./TaskItem";
+import TaskItem from "./TaskItem";
 
-const Tasks = ({ tasks }) => {
+const Tasks = ({ tasks, handleTaskClick, handleTaskDeletion }) => {
   return (
     <div>
       {tasks.map((task) => (
-        <Task task={task}/>
+        <TaskItem
+          task={task}
+          handleTaskClick={handleTaskClick}
+          handleTaskDeletion={handleTaskDeletion}
+        />
       ))}
     </div>
   );
