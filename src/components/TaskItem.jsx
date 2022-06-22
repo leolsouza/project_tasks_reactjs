@@ -1,8 +1,15 @@
 import "./TaskItem.css";
 import { CgClose, CgInfo } from 'react-icons/cg';
+import { useNavigate } from "react-router-dom";
 
 
 const TaskItem = ({ task, handleTaskClick, handleTaskDeletion }) => {
+  const navigate = useNavigate();
+
+  const handleTaskDetailsClick = () => {
+    navigate(`/${task.title}`, {replace: true});
+  }
+  
   return (
     <div
       className="task-container"
@@ -21,7 +28,7 @@ const TaskItem = ({ task, handleTaskClick, handleTaskDeletion }) => {
         </button>
         <button
           className="see-task-details-button"
-         
+          onClick={handleTaskDetailsClick} 
         >
           <CgInfo />
         </button>
