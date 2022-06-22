@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
-
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 import Button from "./Button";
 import Header from "./Header";
@@ -11,22 +12,30 @@ const TaskDetails = () => {
   const params = useParams();  
   const navigate = useNavigate();
 
-  const handleBackButton = () => {
-    navigate(-1);
-  }
-  
+  const [task, setTask] = useState({});
+
+  useEffect(() => {
+    const fetchTask = async () => {
+      
+      const { data } = await axios.get(`http://127.0.0.1:8000/api/tasks/${params.id}`);
+      
+      setTask(data);
+    };
+
+    fetchTask();
+    
+  }, [params]);
 
   return (
     <div className="container">
       <Header />
       <div className="back-button-container">
-        <Button onClick={handleBackButton}>Voltar</Button>
+        <Button onClick={()=>navigate(-1)}>Voltar</Button>
       </div>
       <div className="task-details-container">
-        <h2>{params.taskTitle}</h2>
+        <h2>{task.title}</h2>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et ipsam
-          porro dignissimos magni incidunt ut?
+          {task.description}
         </p>
       </div>
     </div>

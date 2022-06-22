@@ -7,9 +7,9 @@ const TaskItem = ({ task, handleTaskClick, handleTaskDeletion }) => {
   const navigate = useNavigate();
 
   const handleTaskDetailsClick = () => {
-    navigate(`/${task.title}`, {replace: true});
+    navigate(`/tasks/${task.id}`);
   }
-  
+
   return (
     <div
       className="task-container"

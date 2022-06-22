@@ -6,8 +6,8 @@ import TaskDetails from "./components/TaskDetails";
 const App = () => {
   return (
     <Routes>
-        <Route path='/' element={<Page />} /> 
-        <Route path='/:taskTitle' element={<TaskDetails />} />
+        <Route path='/tasks' element={<Page />} /> 
+        <Route path='/tasks/:id' element={<TaskDetails />} />
     </Routes>
   );
 };
