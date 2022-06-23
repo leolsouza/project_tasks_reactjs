@@ -4,42 +4,49 @@ import { useEffect, useState } from "react";
 
 import Button from "./Button";
 import Header from "./Header";
+import Loading from "./Loading";
 
 import "./Page.css";
 import "./TaskDetails.css";
 
 const TaskDetails = () => {
-  const params = useParams();  
+  const params = useParams();
   const navigate = useNavigate();
 
-  const [task, setTask] = useState({});
+  const [task, setTask] = useState([]);
+  const [removeLoading, setRemoveLoading] = useState(false);
 
   useEffect(() => {
+   setTimeout(() => {
     const fetchTask = async () => {
-      
-      const { data } = await axios.get(`http://127.0.0.1:8000/api/tasks/${params.id}`);
-      
+      const { data } = await axios.get(
+        `http://127.0.0.1:8000/api/tasks/${params.id}`
+      );
+
       setTask(data);
+      setRemoveLoading(true);
     };
 
     fetchTask();
-    
+   },2000);
+  
   }, [params]);
 
   return (
     <div className="container">
       <Header />
       <div className="back-button-container">
-        <Button onClick={()=>navigate(-1)}>Voltar</Button>
+        <Button onClick={() => navigate(-1)}>Voltar</Button>
       </div>
       <div className="task-details-container">
+      {!removeLoading && <Loading />}
         <h2>{task.title}</h2>
-        <p>
-          {task.description}
-        </p>
+        <p>{task.description}</p>
       </div>
     </div>
   );
 };
 
 export default TaskDetails;
+
+//se o removeloading não estiver acontecendo, então carregando o componente Loading
