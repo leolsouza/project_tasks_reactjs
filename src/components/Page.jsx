@@ -10,23 +10,24 @@ import Loading from "./Loading";
 
 const Page = () => {
   const [tasks, setTasks] = useState([]);
-  const [removeLoading, setRemoveLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       const fetchTasks = async () => {
-        
         const { data } = await axios.get("http://127.0.0.1:8000/api/tasks");
-        
+
         setTasks(data);
-        setRemoveLoading(true);
+        setLoading(false);
       };
-  
+
       fetchTasks();
-    },2000)
+    }, 2000);
   }, []);
 
   const handleTaskClick = (taskId) => {
+    axios.get(`http://127.0.0.1:8000/api/tasks/completed/${taskId}`);
+
     const newTasks = tasks.map((task) => {
       if (task.id === taskId) return { ...task, completed: !task.completed };
 
@@ -37,19 +38,23 @@ const Page = () => {
   };
 
   const handleTaskAddition = (inputData) => {
+
     const newTasks = [
       ...tasks,
       {
         title: inputData,
         id: uuidv4(),
+        description: 'Isso é uma descrição teste',
         completed: false,
       },
     ];
-
+    
     setTasks(newTasks);
   };
 
   const handleTaskDeletion = (taskId) => {
+    axios.delete(`http://127.0.0.1:8000/api/tasks/${taskId}`);
+
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(newTasks);
   };
@@ -63,8 +68,8 @@ const Page = () => {
         handleTaskClick={handleTaskClick}
         handleTaskDeletion={handleTaskDeletion}
       />
-      {!removeLoading && <Loading />}
-    </div>  
+      {loading && <Loading />}
+    </div>
   );
 };
 

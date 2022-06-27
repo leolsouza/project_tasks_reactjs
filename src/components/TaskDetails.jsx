@@ -14,7 +14,7 @@ const TaskDetails = () => {
   const navigate = useNavigate();
 
   const [task, setTask] = useState([]);
-  const [removeLoading, setRemoveLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
    setTimeout(() => {
@@ -24,7 +24,7 @@ const TaskDetails = () => {
       );
 
       setTask(data);
-      setRemoveLoading(true);
+      setLoading(false);
     };
 
     fetchTask();
@@ -39,7 +39,7 @@ const TaskDetails = () => {
         <Button onClick={() => navigate(-1)}>Voltar</Button>
       </div>
       <div className="task-details-container">
-      {!removeLoading && <Loading />}
+      {loading && <Loading />}
         <h2>{task.title}</h2>
         <p>{task.description}</p>
       </div>
