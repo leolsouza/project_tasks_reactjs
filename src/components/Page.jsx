@@ -1,23 +1,31 @@
 import AddTask from "./AddTask";
 import Header from "./Header";
 import Tasks from "./Tasks";
+import Loading from "./Loading";
+import Error from './Error';
+
 
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./Page.css";
-import Loading from "./Loading";
+
 
 const Page = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       const fetchTasks = async () => {
-        const { data } = await axios.get("http://127.0.0.1:8000/api/tasks");
-
-        setTasks(data);
+        try {
+          const { data } = await axios.get("http://127.0.0.1:8000/api/tasks");
+          setTasks(data);
+        } 
+        catch {
+          setError(true);
+        }
         setLoading(false);
       };
 
@@ -38,17 +46,16 @@ const Page = () => {
   };
 
   const handleTaskAddition = (inputData) => {
-
     const newTasks = [
       ...tasks,
       {
         title: inputData,
         id: uuidv4(),
-        description: 'Isso é uma descrição teste',
+        description: "Isso é uma descrição teste",
         completed: false,
       },
     ];
-    
+
     setTasks(newTasks);
   };
 
@@ -61,8 +68,9 @@ const Page = () => {
 
   return (
     <div className="container">
-      <Header />
-      <AddTask handleTaskAddition={handleTaskAddition} />
+      {error && <Error />}
+      {!error && <Header /> }
+      {!error && <AddTask handleTaskAddition={handleTaskAddition} /> }
       <Tasks
         tasks={tasks}
         handleTaskClick={handleTaskClick}
