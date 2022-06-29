@@ -69,8 +69,7 @@ const Page = () => {
   return (
     <div className="container">
       {error && <Error />}
-      {!error && <Header /> }
-      {!error && <AddTask handleTaskAddition={handleTaskAddition} /> }
+      {!error && <div> <Header /> <AddTask handleTaskAddition={handleTaskAddition}/> </div> }
       <Tasks
         tasks={tasks}
         handleTaskClick={handleTaskClick}
